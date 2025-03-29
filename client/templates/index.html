@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Stream</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateImage() {
+            $.getJSON('/get_current_image', function(data) {
+                if (data.image) {
+                    $('#camera-image').attr('src', 'data:image/jpeg;base64,' + data.image);
+                    $('#last-update').text('Zadnja posodobitev: ' + new Date().toLocaleTimeString());
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            // osveževanje slike vsakih 10 sekund
+            setInterval(updateImage, 10000);
+            
+            // prva osvežitev takoj
+            updateImage();
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .image-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        #last-update {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Testni strežnik za prikaz slike</h1>
+    <p>Prikazana slika se osvežuje na vsakih 10 sekund.</p>
+    
+    <div class="image-container">
+        <img id="camera-image" style="max-width: 100%;">
+        <div id="last-update"></div>
+    </div>
+</body>
+</html>
